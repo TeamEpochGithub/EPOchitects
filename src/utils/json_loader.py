@@ -14,6 +14,15 @@ class JsonDataLoader:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
 
+    def get_all_train_pairs(self):
+        """Flatten all train input/output pairs across all files."""
+        all_pairs = []
+        for filename in self.files:
+            data = self._load_file(filename)
+            for entry in data["train"]:
+                all_pairs.append((entry["input"], entry["output"]))
+        return all_pairs
+
     # 1. iterate through all json files in the folder and pass them as a list of strings
     def get_all_files_as_strings(self) -> list[str]:
         file_strings = []
