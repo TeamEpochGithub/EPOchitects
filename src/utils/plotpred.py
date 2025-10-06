@@ -48,7 +48,7 @@ def plot_prediction(result, task, task_id):
     plt.tight_layout()
     
     # Create visuals directory in output folder
-    visuals_dir = Path(__file__).resolve().parent.parent.parent / 'output' / 'visuals'
+    visuals_dir = Path(__file__).resolve().parent.parent.parent / 'output' 
     
     # Save figure
     fig_path = visuals_dir / f"{task_id.replace('.json', '.png')}"
