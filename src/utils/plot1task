@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+import numpy as np
+import json
+
+# 10-color colormap for values 0–9
+cmap = plt.get_cmap("tab10", 10)
+
+def plot_grid(ax, grid, title=""):
+    """Plot one ARC grid."""
+    grid = np.array(grid)
+    ax.imshow(grid, cmap=cmap, vmin=0, vmax=9)
+    ax.set_xticks([])
+    ax.set_yticks([])
+    if title:
+        ax.set_title(title, fontsize=8)
+
+def plot_task(task):
+    """
+    task: dict with "train" and "test",
+    each a list of {"input": grid, "output": grid}.
+    """
+    n_train = len(task["train"])
+    n_test = len(task["test"])
+    total = n_train + n_test
+
+    fig, axes = plt.subplots(total, 2, figssize=(6, 3*total))
+    if total == 1:  # special case
+        axes = np.array([axes])
+
+    # Plot training examples
+    for i, pair in enumerate(task["train"]):
+        plot_grid(axes[i,0], pair["input"], "Train Input")
+        plot_grid(axes[i,1], pair["output"], "Train Output")
+
+    # Plot test examples
+    for j, pair in enumerate(task["test"]):
+        plot_grid(axes[n_train+j,0], pair["input"], "Test Input")
+        plot_grid(axes[n_train+j,1], pair["output"], "Test Output")
+
+    plt.tight_layout()
+    plt.show()
+
+# -----------------------------
+# Example usage
+# -----------------------------
+if __name__ == "__main__":
+    # Replace this with your ARC task JSON path
+    path = "../data/evaluation/fc754716.json"
+
+    with open(path, "r") as f:
+        task = json.load(f)
+
+    plot_task(task)
